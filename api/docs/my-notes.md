@@ -6,13 +6,13 @@
 - https://www.typescriptlang.org/pt/
 - https://www.npmjs.com/package/@types/node
 - https://fastify.dev/
-- 
+- https://www.prisma.io/
 - 
 - 
 - 
 
 ## Extensões Vs Code
-- 
-- 
+- REST Client 
+- Prisma
 - 
 - 
