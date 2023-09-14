@@ -8,4 +8,3 @@ export async function getAllPromptsRoute(app: FastifyInstance) {
 		return prompts;
 	});
 }
-
