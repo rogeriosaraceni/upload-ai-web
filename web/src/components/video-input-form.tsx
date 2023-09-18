@@ -8,13 +8,13 @@ import { getFFmpeg } from "@/lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 
 export function VideoInputForm() {
-
     //1 parametro nome do estado
     //2 parametro recebe uma função p/ alterar o valor do estado
     const [videoFile, setVideoFile] = useState<File | null>(null)
 
     const promptInputRef = useRef<HTMLTextAreaElement>(null)
 
+    //
     function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
         const { files } = event.currentTarget
 
@@ -22,8 +22,64 @@ export function VideoInputForm() {
             return
         }
 
-        const selectFile = files[0]
-        setVideoFile(selectFile)
+        const selectdFile = files[0]
+        setVideoFile(selectdFile)
+    }
+
+    //
+    async function converterVideoToAudio(video: File) {
+        console.log('Convert started.');
+
+        const ffmpeg = await getFFmpeg()
+
+        await ffmpeg.writeFile('input.mp4', await fetchFile(video))
+
+        ffmpeg.on('log', log => {
+            console.log(log);
+        })
+
+        ffmpeg.on('progress', progress => {
+            console.log('Convert progress: ' + Math.round(progress.progress * 100))
+        })
+
+        await ffmpeg.exec([
+            '-i',
+            'input.mp4',
+            '-map',
+            '0:a',
+            '-b:a',
+            '20k',
+            '-acodec',
+            'libmp3lame',
+            'output.mp3'
+        ])
+
+        const data = await ffmpeg.readFile('output.mp3')
+
+        const audioFileBlob = new Blob([data], { type: 'audio/mpeg' })
+        const audioFile = new File([audioFileBlob], 'audio.mp3', {
+            type: 'audio/mpeg'
+        })
+
+        console.log('Convert finished.')
+
+        return audioFile
+    }
+
+    //
+    async function handleUploadVideo(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        const prompt = promptInputRef.current?.value
+
+        if (!videoFile) {
+            return
+        }
+
+        //converter o vídeo em áudio
+        const audioFile = await converterVideoToAudio(videoFile)
+
+        console.log(audioFile);
     }
 
     //Hook useMemo: recebe 1 parametro uma function e como 2 parametro um array de dependências
@@ -35,36 +91,11 @@ export function VideoInputForm() {
         return URL.createObjectURL(videoFile)
     }, [videoFile])
 
-
-    async function converterVideoToAudio(video: File) {
-        console.log('Convert starte');
-
-        const ffmpeg = await getFFmpeg()
-
-        await ffmpeg.writeFile("input.mp4", await fetchFile(video))
-    }
-
-
-    //
-    function handleUploadVideo(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-
-        const prompt = promptInputRef.current?.value
-
-        if (!videoFile) {
-            return
-        }
-
-        //converter o vídeo em áudio
-
-
-    }
-
     return (
         <form onSubmit={handleUploadVideo} className="space-y-6">
             <label
                 htmlFor="video"
-                className="relative border flex rounded-md aspect-video cursor-pointer border-dashed text-sm flex-col gap-2 items-center justify-center text-muted-foreground hover:bg-primary/5"
+                className="relative border flex rounded-md aspect-video cursor-pointer border-dashed text-sm flex-col gap-2 items-center justify-center text-muted-foreground hover:bg-primary/5 overflow-hidden"
             >
                 {previewURL ? (
                     <video src={previewURL} controls={false} className="pointer-events-none absolute inset-0" />
