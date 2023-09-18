@@ -79,7 +79,7 @@ export function VideoInputForm() {
         //converter o vídeo em áudio
         const audioFile = await converterVideoToAudio(videoFile)
 
-        console.log(audioFile);
+        console.log(audioFile, prompt);
     }
 
     //Hook useMemo: recebe 1 parametro uma function e como 2 parametro um array de dependências
