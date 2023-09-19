@@ -7,6 +7,8 @@
     Link documentação
 </a>
 
+-   https://github.com/rocketseat-education/nlw-ai-mastery
+
 ## Dependências - Front-End
 
 -   https://vitejs.dev/
@@ -35,6 +37,8 @@
 -   https://github.com/fastify/fastify-multipart -https://zod.dev/
 -   https://openai.com/
 -   https://www.npmjs.com/package/dotenv
+-   https://ffmpegwasm.netlify.app/
+-   https://github.com/ffmpegwasm/ffmpeg.wasm
 
 ## Extensões Vs Code - Back-End
 
@@ -59,3 +63,6 @@
 ## Aula 3 - https://www.youtube.com/watch?v=m2xo3EmntLw
 
 #### PRÓXIMO-NÍVEL
+
+-   Aula 3: parada: 1:09:10
+
