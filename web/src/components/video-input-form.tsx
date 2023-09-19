@@ -17,7 +17,11 @@ const statusMessages = {
     success: 'Sucesso!',
 }
 
-export function VideoInputForm() {
+interface VideoInputFormProps {
+    onVideoUploaded: (id: string) => void;
+}
+
+export function VideoInputForm(props: VideoInputFormProps) {
     //1 parametro nome do estado
     //2 parametro recebe uma função p/ alterar o valor do estado
     const [videoFile, setVideoFile] = useState<File | null>(null)
@@ -116,6 +120,8 @@ export function VideoInputForm() {
         console.log('finalizou');
 
         setStatus('success')
+
+        props.onVideoUploaded(videoId)
     }
 
     //Hook useMemo: recebe 1 parametro uma function e como 2 parametro um array de dependências
