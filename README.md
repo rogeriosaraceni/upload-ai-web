@@ -63,6 +63,3 @@
 ## Aula 3 - https://www.youtube.com/watch?v=m2xo3EmntLw
 
 #### PRÓXIMO-NÍVEL
-
--   Aula 3: parada: 1:09:10
-
